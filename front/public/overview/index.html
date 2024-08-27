@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <script>
+      var process = {
+        platform: "win32",
+        env: {},
+      };
+    </script>
+
+    <script src="./js/sass/sass.js"></script>
+    <script src="./js/hash-sum.js"></script>
+    <script src="./js/vue3/compiler-sfc.global.js"></script>
+    <script src="./js/systemjs-6.10.3/system.js"></script>
+    <script src="./js/systemjs-vue-0.0.1.js"></script>
+    <script src="./js/systemjs-babel-0.3.1/systemjs-babel.js"></script>
+
+    <script src="./js/vue3/vue.global.js"></script>
+    <script src="./js/echarts.min.js"></script>
+    <script src="./js/lottie.min.js"></script>
+    <script type="systemjs-importmap">
+      {
+        "imports": {
+          "echarts": "app:echarts",
+          "vue": "app:vue"
+        }
+      }
+    </script>
+    <!-- <script src="./js/element-plus.js"></script> -->
+    <style>
+      html {
+        width: 100%;
+        height: 100%;
+      }
+      body {
+        width: 100%;
+        height: 100%;
+      }
+      #app {
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script>
+      function getBlobURL(jsCode) {
+        const blob = new Blob([jsCode], { type: "text/javascript" });
+        const blobURL = URL.createObjectURL(blob);
+        return blobURL;
+      }
+
+      //接受父页面的消息
+      window.addEventListener(
+        "message",
+        (e) => {
+          const moduleUrl = this.getBlobURL(e.data);
+          System.set("app:vue", Vue);
+          System.set("app:echarts", echarts);
+          System.import(moduleUrl).then(function (m) {
+            var app = Vue.createApp(m.default);
+            if (window.extendScripts) {
+              window.extendScripts.forEach((element) => {
+                app.use(eval(element));
+              });
+            }
+            // app.use(ElementPlus);
+            app.mount("#app");
+          });
+        },
+        false
+      );
+    </script>
+  </body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./js/sass/sass.js"></script>
+    <script src="./js/systemjs-6.10.3/system.js"></script>
+    <script src="./js/vue3/vue.global.js"></script>
+    <script src="./js/echarts.min.js"></script>
+    <script src="./js/lottie.min.js"></script>
+    <!-- <script src="./js/elementplus/index.js"></script> -->
+    <script type="systemjs-importmap">
+      {
+        "imports": {
+          "echarts": "app:echarts",
+          "vue": "app:vue"
+        }
+      }
+    </script>
+    <script>
+      window.process = { env: {} };
+    </script>
+    <script type="module">
+      import "./js/custom/system-vue-plugin.js";
+      import "./js/systemjs-babel-0.3.1/systemjs-babel.js";
+    </script>
+
+    <title>预览页面</title>
+    <style>
+      html {
+        width: 100%;
+        height: 100%;
+      }
+      body {
+        width: 100%;
+        height: 100%;
+      }
+      #app {
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+      }
+    </style>
+    <link rel="stylesheet" href="./js/elementplus/index.css" />
+  </head>
+  <body>
+    <div id="app" class="main-wrapper"></div>
+  </body>
+  <script type="module">
+    function getBlobURL(jsCode) {
+      const blob = new Blob([jsCode], { type: "text/javascript" });
+      const blobURL = URL.createObjectURL(blob);
+      return blobURL;
+    }
+
+    //批量加载
+    function loadScripts(scripts) {
+      return new Promise((resolve, reject) => {
+        const totalScript = scripts.length;
+        let hasLoaded = 0;
+        for (let index = 0; index < totalScript; index++) {
+          const scriptBlock = scripts[index];
+          const tag = document.createElement(scriptBlock.tag);
+          delete scriptBlock["tag"];
+          for (let propKey in scriptBlock) {
+            tag[propKey] = scriptBlock[propKey];
+          }
+          document.head.append(tag);
+          tag.onload = function () {
+            hasLoaded++;
+            if (hasLoaded === totalScript) {
+              resolve("加载完成");
+            }
+          };
+        }
+
+        setTimeout(() => {
+          reject("加载失败，已加载：", hasLoaded);
+        }, 5000);
+      });
+    }
+
+    //接受父页面的消息
+    window.addEventListener(
+      "message",
+      async (e) => {
+        const message = e.data;
+        switch (message.type) {
+          //在header中插入脚本
+          case "scriptsLoad":
+            if (message.content) {
+              try {
+                window.VUE_APP_BACKGROUND_ADDRESS =
+                  message.VUE_APP_BACKGROUND_ADDRESS;
+                const content = (message.content || "")
+                  .replaceAll("\r", "")
+                  .replaceAll("\n", "");
+                const scripts = JSON.parse(content);
+                const res = await loadScripts(scripts);
+                if (res !== "加载完成") {
+                  alert(res);
+                }
+              } catch (error) {
+                console.warn("##########插入的脚本格式错误##########", error);
+              }
+            }
+            window.parent.postMessage("scriptsLoadedCompleted", "*");
+            break;
+          case "globalRegisters":
+            if (message.content) {
+              const content = (message.content || "")
+              .replaceAll("\r", "")
+              .replaceAll("\n", "");
+              const registers = JSON.parse(content) || [];
+              window.globalRegisters = [...registers];
+            }
+            window.parent.postMessage("globalRegistersCompleted", "*");
+            break;
+          case "code":
+            console.log("@@@@@@@@@@@@@@iframe已经收到代码：", e);
+            const moduleUrl = getBlobURL(message.content);
+            System.set("app:vue", Vue);
+            System.set("app:echarts", echarts);
+            System.import(moduleUrl).then(function (m) {
+              var app = Vue.createApp(m.default);
+              if (window.globalRegisters) {
+                window.globalRegisters.forEach((element) => {
+                  app.use(eval(element));
+                });
+              }
+              app.provide("$app", app);
+              app.mount("#app");
+            });
+            break;
+        }
+      },
+      false
+    );
+
+    window.parent.postMessage("iframeInited", "*");
+  </script>
+</html>

@@ -1,0 +1,72 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "5650908",
+      "name": "普通文件夹",
+      "font_class": "putongwenjianjia",
+      "unicode": "e62d",
+      "unicode_decimal": 58925
+    },
+    {
+      "icon_id": "5650936",
+      "name": "文件夹打开",
+      "font_class": "wenjianjiadakai",
+      "unicode": "e63f",
+      "unicode_decimal": 58943
+    },
+    {
+      "icon_id": "5651338",
+      "name": "导出",
+      "font_class": "daochu",
+      "unicode": "e654",
+      "unicode_decimal": 58964
+    },
+    {
+      "icon_id": "5651339",
+      "name": "导入",
+      "font_class": "daoru",
+      "unicode": "e655",
+      "unicode_decimal": 58965
+    },
+    {
+      "icon_id": "5651529",
+      "name": "新建文件夹",
+      "font_class": "xinjianwenjianjia",
+      "unicode": "e691",
+      "unicode_decimal": 59025
+    },
+    {
+      "icon_id": "5651536",
+      "name": "文件_2",
+      "font_class": "wenjian_",
+      "unicode": "e697",
+      "unicode_decimal": 59031
+    },
+    {
+      "icon_id": "5651538",
+      "name": "文件添加",
+      "font_class": "wenjiantianjia",
+      "unicode": "e698",
+      "unicode_decimal": 59032
+    },
+    {
+      "icon_id": "5651572",
+      "name": "云上传",
+      "font_class": "yunshangchuan",
+      "unicode": "e6aa",
+      "unicode_decimal": 59050
+    },
+    {
+      "icon_id": "5651573",
+      "name": "云下载",
+      "font_class": "yunxiazai",
+      "unicode": "e6ab",
+      "unicode_decimal": 59051
+    }
+  ]
+}

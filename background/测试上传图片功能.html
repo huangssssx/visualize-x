@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="add">
+      <p>项目名称： <input type="text" class="productName" /></p>
+      <p>项目地址： <input type="text" class="webpath" /></p>
+      <p>设计稿地址： <input type="text" class="designpath" /></p>
+      <p>商品图片： <input type="file" class="icon" /></p>
+      <p>
+        <button type="button" class="add-btn">添加商品</button>
+    </div>
+  </body>
+  <script>
+    let param = new FormData();
+    $(".icon").change(function () {
+      //获取图片信息
+      let file = this.files[0];
+      //"file"为前后端约定vb的属性名
+      param.append("icon", file);
+    });
+
+    $(".add-btn").click((e) => {
+      let name = $(".productName")[0].value;
+      let webpath = $(".webpath")[0].value;
+      let designpath = $(".designpath")[0].value;
+      param.append("name", name);
+      param.append("timestamp", Date.now());
+      param.append("webpath", webpath);
+      param.append("designpath", designpath);
+      $.ajax({
+        url: "http://localhost:3000/form",
+        type: "post",
+        processData: false,
+        contentType: false,
+        headers: {
+          // "content-type": "multipart/form-data",
+          Accept: "application/json; charset=utf-8",
+        },
+        data: param,
+        success: function () {
+          //   alert("ok");
+        },
+      });
+      return false;
+    });
+  </script>
+</html>

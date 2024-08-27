@@ -1,0 +1,37 @@
+{
+  "name": "cestc-screen-history-background",
+  "description": "此项目为大屏历史展示项目的后台 /index.js为项目入口",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc  &node ./build.js",
+    "start": "node ./dist/bin/www",
+    "dev": "nodemon -e ts --exec ts-node ./bin/www"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "fs-extra": "^10.1.0",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "multer": "^1.4.4",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.3.3"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^18.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.29.0",
+    "@typescript-eslint/parser": "^5.29.0",
+    "eslint": "^8.18.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.2.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "nodemon": "^2.0.15"
+  }
+}

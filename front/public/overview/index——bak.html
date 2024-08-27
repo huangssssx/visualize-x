@@ -1,0 +1,165 @@
+<html>
+  <body>
+    <div id="app"></div>
+    <script src="../js/vue.global.js"></script>
+    <!-- <script src="https://unpkg.com/vue@next"></script> -->
+    <script src="../js/vue3-sfc-loader.js"></script>
+    <script src="../js/sass.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+    <!-- <script src="../js/vue-slick-carousel/vue-slick-carousel.umd.min.js"></script> -->
+    <!-- <script src="https://unpkg.com/vue-agile"></script>
+    <link rel="stylesheet" href="https://unpkg.com/vue-agile/dist/VueAgile.css"> -->
+    <script type="module">
+      const defineAsyncComponent = Vue.defineAsyncComponent;
+      const { loadModule } = window["vue3-sfc-loader"];
+      var sass = new Sass();
+      // var scss = '$someVar: 123px; .some-selector { width: $someVar; }';
+      // sass.compile(scss, function(result) {
+      //   console.log(result);
+      // });
+
+      let codeText = "";
+      let app = null;
+
+      function initApp() {
+        if (app) {
+          app.unmount();
+        }
+        app = Vue.createApp({
+          components: {
+            // 'my-component': Vue.defineAsyncComponent( () => loadModule('./myComponent.vue', options) )
+          },
+          computed: {
+            comp() {
+              // eslint-disable-next-line no-undef
+              return defineAsyncComponent(() => {
+                return loadModule(this.moduleUrl, this.options);
+              });
+            },
+          },
+          watch: {
+            codes(val) {
+              // console.log(val);
+            },
+          },
+          data() {
+            const that = this;
+            return {
+              comKey: "xxxxxxx",
+              codes: "",
+              moduleUrl: "../remote/test.vue",
+              options: {
+                moduleCache: {
+                  vue: window.Vue,
+                  stylus: (source) =>
+                    Object.assign(stylus(source), { deps: () => [] }),
+                  scss: (source) => {
+                    return sass.compile(scss);
+                  },
+                },
+                async getFile(url) {
+                  if (url.indexOf("/txtCode") === -1) {
+                    // const res = await fetch(url);
+                    // if (!res.ok) {
+                    //   throw Object.assign(
+                    //     new Error(`${res.statusText} ${url}`),
+                    //     {
+                    //       res,
+                    //     }
+                    //   );
+                    // }
+                    // that.codes = await res.text();
+                  }
+                  return Promise.resolve(that.codes);
+
+                  // debugger
+                  // return {
+                  //   getContentData: Promise.resolve(codes),
+                  // };
+                },
+                async addStyle(textContent, scopeId, descStyle) {
+                  if (descStyle && descStyle.lang === "scss") {
+                    const content = sass.compile(
+                      descStyle.content,
+                      function (styles) {
+                        const style = Object.assign(
+                          document.createElement("style"),
+                          {
+                            textContent: styles.text,
+                          }
+                        );
+                        const styleChildren =
+                          document.getElementsByTagName("head").item(0)
+                            .childNodes || [];
+                        styleChildren.forEach((styleChild) => {
+                          document
+                            .getElementsByTagName("head")
+                            .item(0)
+                            .removeChild(styleChild);
+                        });
+                        const ref =
+                          document.head.getElementsByTagName("style")[0] ||
+                          null;
+                        document.head.insertBefore(style, ref);
+                      }
+                    );
+                  }
+
+                  const style = Object.assign(document.createElement("style"), {
+                    textContent,
+                  });
+                  const ref =
+                    document.head.getElementsByTagName("style")[0] || null;
+                  document.head.insertBefore(style, ref);
+                },
+              },
+            };
+          },
+          template: '<component :is="getComponent(moduleUrl)"></component>',
+          mounted() {
+            window.changeModuleUrl = this.changeModuleUrl;
+          },
+          methods: {
+            getComponent(moduleUrl) {
+              return defineAsyncComponent(() => {
+                return loadModule(moduleUrl, this.options);
+              });
+            },
+            changeModuleUrl(codes) {
+              this.moduleUrl = `/txtCode${Date.now()}.vue`;
+              this.codes = codes;
+              console.log("######################changeModuleUrl:",this.code);
+              this.comKey = `com_${Date.now()}`;
+            },
+          },
+        });
+        app.config.errorHandler = (err, vm, info) => {
+          console.log("errorHandle", err, vm, info); // errorHandler也会执行两次
+          // err，错误对象
+          // vm，发生错误的组件实例
+          // info，Vue特定的错误信息，例如错误发生的生命周期、错误发生的事件
+        };
+        app.mount("#app");
+      }
+
+      initApp();
+
+      //接受父页面的消息
+      window.addEventListener(
+        "message",
+        (e) => {
+          initApp();
+          window.changeModuleUrl(e.data);
+        },
+        false
+      );
+
+      window.onerror = function (message, source, lineno, colno, error) {
+        console.log("##############################error######@@@@@@@");
+      };
+    </script>
+  </body>
+</html>
+<script src="../js/echarts.min.js"></script>
+<script src="../js/lottie.min.js"></script>

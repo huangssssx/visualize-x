@@ -1,0 +1,39 @@
+{
+  "name": "cestc-screen-components",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "vue-cli-service serve",
+    "build": "vue-cli-service build --mode production",
+    "company": "vue-cli-service build --mode company",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@codemirror/lang-javascript": "^6.0.1",
+    "@codemirror/theme-one-dark": "^6.0.0",
+    "@element-plus/icons-vue": "^1.1.4",
+    "axios": "^0.27.2",
+    "core-js": "^3.6.5",
+    "element-plus": "^2.3.4",
+    "moment": "^2.29.3",
+    "normalize.css": "^8.0.1",
+    "sass": "^1.44.0",
+    "sass-loader": "^10.0.1",
+    "vue": "^3.2.36",
+    "vue-codemirror": "^4.0.6",
+    "vue-router": "^4.0.16",
+    "vue3-sfc-loader": "^0.8.4",
+    "vuex": "4.0.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.15",
+    "@vue/cli-plugin-eslint": "~4.5.15",
+    "@vue/cli-service": "~4.5.15",
+    "@vue/compiler-sfc": "^3.0.0",
+    "@vue/eslint-config-airbnb": "^5.0.2",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-vue": "^7.0.0"
+  }
+}
