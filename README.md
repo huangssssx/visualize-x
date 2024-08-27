@@ -14,6 +14,15 @@ VisualizeVue 是一个强大的可视化组件开发示例平台，专门为 Vue
 - **详细信息展示**：通过抽屉组件，可以查看和编辑组件的详细信息。
 - **图标库与子组件库**：方便地访问图标库和子组件库，丰富组件开发的资源。
 
+<img width="1229" alt="image" src="https://github.com/user-attachments/assets/a2f95bc0-cecc-42e6-8bad-b4756d232c8a">
+<img width="1887" alt="image" src="https://github.com/user-attachments/assets/5a9df3e2-7d83-457f-b655-029f4c9f0657">
+<img width="1914" alt="image" src="https://github.com/user-attachments/assets/a071955e-0ee0-4c1a-890d-1059dda645ea">
+<img width="1191" alt="image" src="https://github.com/user-attachments/assets/1476fd54-db51-4d4b-a248-87966d4388d3">
+<img width="894" alt="image" src="https://github.com/user-attachments/assets/3a42a137-cbea-40b7-be46-a8a463d1ae45">
+
+
+
+
 ## 三、技术栈
 
 - **Vue.js**：用于构建用户界面和实现前端逻辑。
